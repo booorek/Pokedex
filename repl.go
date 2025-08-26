@@ -40,8 +40,8 @@ type cliCommand struct {
 }
 type config struct {
 	pokeapiClient pokeAPI.Client
-	next     string
-	previous string
+	next          string
+	previous      string
 }
 
 func init() {
@@ -65,6 +65,11 @@ func init() {
 			name:        "mapb",
 			description: "Shows available back locations",
 			callback:    commandMapB,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Show pokemons is passed area",
+			callback:    commandExplore,
 		},
 	}
 }

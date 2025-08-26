@@ -21,7 +21,7 @@ type Result struct {
 func (c *Client) GetMapFromAPI(path *string) (Locations, error) {
 	var finalPath string
 	if path == nil {
-		finalPath = "https://pokeapi.co/api/v2/location-area/"
+		finalPath = apiURL + "/location-area"
 	} else {
 		finalPath = *path
 	}
