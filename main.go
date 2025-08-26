@@ -6,7 +6,10 @@ import (
 )
 
 func main(){
-	client := pokeAPI.NewClient(time.Second*5)
-	startPokedex(&client)
+	client := pokeAPI.NewClient(time.Second*5,time.Minute*5)
+	config := &config{
+		pokeapiClient: client,
+	}
+	startPokedex(config)
 	
 }

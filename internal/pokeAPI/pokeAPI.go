@@ -25,6 +25,14 @@ func (c *Client) GetMapFromAPI(path *string) (Locations, error) {
 	} else {
 		finalPath = *path
 	}
+	if val, ok := c.cache.Get(finalPath); ok {
+		data := Locations{}
+		err := json.Unmarshal(val, &data)
+		if err != nil {
+			return Locations{}, err
+		}
+		return data,nil
+	}
 	res, err := http.Get(finalPath)
 	if err != nil {
 		return Locations{}, fmt.Errorf("Error while acquiring data from API")
@@ -45,5 +53,7 @@ func (c *Client) GetMapFromAPI(path *string) (Locations, error) {
 	if err != nil {
 		return Locations{}, fmt.Errorf("Cannot unmarshal data")
 	}
+
+	c.cache.Add(finalPath,body)
 	return data, nil
 }

@@ -10,9 +10,8 @@ import (
 
 var commandRegistry map[string]cliCommand
 
-func startPokedex(c *pokeAPI.Client) {
+func startPokedex(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
-	cfg := &config{}
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -40,6 +39,7 @@ type cliCommand struct {
 	callback    func(*config) error
 }
 type config struct {
+	pokeapiClient pokeAPI.Client
 	next     string
 	previous string
 }

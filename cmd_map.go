@@ -4,16 +4,17 @@ import (
 	"fmt"
 
 	"github.com/booorek/pokedexcli/internal/pokeAPI"
-	"github.com/booorek/pokedexcli/internal/pokecache"
 )
-func commandMap(cache *pokecache.Cache,config *config) error {
+
+func commandMap(config *config) error {
 	var gameMap pokeAPI.Locations
 	var err error
 
 	if config.next != "" {
-		gameMap, err = pokeAPI.GetMapFromAPI(cache,&config.next)
+		gameMap, err = config.pokeapiClient.GetMapFromAPI(&config.next)
 	} else {
-		gameMap, err = pokeAPI.GetMapFromAPI(nil)
+		gameMap, err = config.pokeapiClient.GetMapFromAPI(nil)
+
 	}
 
 	if err != nil {
@@ -33,7 +34,7 @@ func commandMapB(config *config) error {
 	var gameMap pokeAPI.Locations
 	var err error
 	if config.previous != "" {
-		gameMap, err = pokeAPI.GetMapFromAPI(&config.previous)
+		gameMap, err = config.pokeapiClient.GetMapFromAPI(&config.previous)
 	} else {
 		return fmt.Errorf("No backward move\n")
 	}
@@ -48,5 +49,3 @@ func commandMapB(config *config) error {
 	}
 	return nil
 }
-
-
