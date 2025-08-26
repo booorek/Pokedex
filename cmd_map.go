@@ -1,20 +1,22 @@
-package main 
+package main
 
-import(
-	"github.com/booorek/pokedexcli/internal/pokeAPI"
+import (
 	"fmt"
+
+	"github.com/booorek/pokedexcli/internal/pokeAPI"
+	"github.com/booorek/pokedexcli/internal/pokecache"
 )
-func commandMap(config *config) error {
+func commandMap(cache *pokecache.Cache,config *config) error {
 	var gameMap pokeAPI.Locations
 	var err error
 
 	if config.next != "" {
-		gameMap, err = pokeAPI.GetMapFromAPI(&config.next)
+		gameMap, err = pokeAPI.GetMapFromAPI(cache,&config.next)
 	} else {
 		gameMap, err = pokeAPI.GetMapFromAPI(nil)
 	}
+
 	if err != nil {
-		fmt.Errorf("Error while communicating with API\n%v", err)
 		return err
 	}
 
@@ -36,7 +38,6 @@ func commandMapB(config *config) error {
 		return fmt.Errorf("No backward move\n")
 	}
 	if err != nil {
-		fmt.Errorf("Error while communicating with API\n%v", err)
 		return err
 	}
 	config.next = gameMap.Next

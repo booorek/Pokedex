@@ -3,15 +3,17 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/booorek/pokedexcli/internal/pokeAPI"
 	"os"
 	"strings"
 )
 
 var commandRegistry map[string]cliCommand
 
-func startPokedex() {
+func startPokedex(c *pokeAPI.Client) {
 	scanner := bufio.NewScanner(os.Stdin)
 	cfg := &config{}
+
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -20,10 +22,10 @@ func startPokedex() {
 			fmt.Printf("Unknown command\n")
 			continue
 		}
+
 		if err := command.callback(cfg); err != nil {
 			fmt.Printf("Error: %v\n", err)
 		}
-
 	}
 }
 
@@ -43,7 +45,6 @@ type config struct {
 }
 
 func init() {
-
 	commandRegistry = map[string]cliCommand{
 		"exit": {
 			name:        "exit",
