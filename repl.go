@@ -16,13 +16,15 @@ func startPokedex(cfg *config) {
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
-		command, err := commandRegistry[string(scanner.Text())]
+		input := cleanInput(scanner.Text())
+		command, err := commandRegistry[input[0]]
+		args := input[1:]
 		if !err {
 			fmt.Printf("Unknown command\n")
 			continue
 		}
 
-		if err := command.callback(cfg); err != nil {
+		if err := command.callback(cfg,args); err != nil {
 			fmt.Printf("Error: %v\n", err)
 		}
 	}
@@ -36,7 +38,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config,[]string) error
 }
 type config struct {
 	pokeapiClient pokeAPI.Client

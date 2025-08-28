@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/booorek/pokedexcli/internal/pokeAPI"
 )
 
-func commandMap(config *config) error {
+func commandMap(config *config, args []string) error {
 	var gameMap pokeAPI.Locations
 	var err error
 
@@ -30,7 +29,7 @@ func commandMap(config *config) error {
 	return nil
 }
 
-func commandMapB(config *config) error {
+func commandMapB(config *config, args []string) error {
 	var gameMap pokeAPI.Locations
 	var err error
 	if config.previous != "" {

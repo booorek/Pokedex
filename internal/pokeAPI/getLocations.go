@@ -7,27 +7,16 @@ import (
 	"net/http"
 )
 
-type Locations struct {
-	Count    int      `json:"count"`
-	Next     string   `json:"next"`
-	Previous string   `json:"previous"`
-	Results  []Result `json:"results"`
-}
-type Result struct {
-	Name string `json:"name"`
-	Url  string `json:"url"`
-}
-
-func (c *Client) GetMapFromAPI(path *string) (Locations, error) {
+func (c *Client) GetMapFromAPI(url *string) (Locations, error) {
 	var finalPath string
-	if path == nil {
+	if url == nil {
 		finalPath = apiURL + "/location-area"
 	} else {
-		finalPath = *path
+		finalPath = *url
 	}
-	if val, ok := c.cache.Get(finalPath); ok {
+	if res, ok := c.cache.Get(finalPath); ok {
 		data := Locations{}
-		err := json.Unmarshal(val, &data)
+		err := json.Unmarshal(res, &data)
 		if err != nil {
 			return Locations{}, err
 		}
@@ -37,13 +26,15 @@ func (c *Client) GetMapFromAPI(path *string) (Locations, error) {
 	if err != nil {
 		return Locations{}, fmt.Errorf("Error while acquiring data from API")
 	}
-	body, err := io.ReadAll(res.Body)
-
-	defer res.Body.Close()
 
 	if res.StatusCode > 299 {
 		return Locations{}, fmt.Errorf("Error while reading from body response")
 	}
+
+	body, err := io.ReadAll(res.Body)
+
+	defer res.Body.Close()
+
 	if err != nil {
 		return Locations{}, fmt.Errorf("Error while reading from body response")
 	}
