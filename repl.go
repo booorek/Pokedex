@@ -48,11 +48,6 @@ type config struct {
 
 func init() {
 	commandRegistry = map[string]cliCommand{
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    commandExit,
-		},
 		"help": {
 			name:        "help",
 			description: "Prints help messages",
@@ -72,6 +67,16 @@ func init() {
 			name:        "explore",
 			description: "Show pokemons is passed area",
 			callback:    commandExplore,
+		},
+		"catch":{
+			name: "catch",
+			description: "Throws pokeball at Pokemon",
+			callback: commandCatch,
+		},
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    commandExit,
 		},
 	}
 }
