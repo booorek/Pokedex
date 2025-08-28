@@ -24,7 +24,7 @@ func startPokedex(cfg *config) {
 			continue
 		}
 
-		if err := command.callback(cfg,args); err != nil {
+		if err := command.callback(cfg, args); err != nil {
 			fmt.Printf("Error: %v\n", err)
 		}
 	}
@@ -38,12 +38,13 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config,[]string) error
+	callback    func(*config, []string) error
 }
 type config struct {
-	pokeapiClient pokeAPI.Client
-	next          string
-	previous      string
+	pokeapiClient  pokeAPI.Client
+	next           string
+	previous       string
+	coughtPokemons map[string]pokeAPI.Pokemon
 }
 
 func init() {
@@ -52,6 +53,11 @@ func init() {
 			name:        "help",
 			description: "Prints help messages",
 			callback:    commandHelp,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Shows Pokedex content",
+			callback:    commandPokedex,
 		},
 		"map": {
 			name:        "map",
@@ -68,10 +74,15 @@ func init() {
 			description: "Show pokemons is passed area",
 			callback:    commandExplore,
 		},
-		"catch":{
-			name: "catch",
+		"catch": {
+			name:        "catch",
 			description: "Throws pokeball at Pokemon",
-			callback: commandCatch,
+			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Inspect Pokemon from Pokedex",
+			callback:    commandInspect,
 		},
 		"exit": {
 			name:        "exit",

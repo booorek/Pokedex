@@ -24,9 +24,11 @@ func commandCatch(config *config, args []string) error {
 	roll := r.Float64()
 
 	if chanceToCatch > roll {
-		fmt.Printf("Catched\n")
+		fmt.Printf("%s cought\n",args[0])
+		config.coughtPokemons[args[0]] = pokemonInfo
+
 	} else {
-		fmt.Printf("Failed while trying to catch %s\n", args[0])
+		fmt.Printf("%s escaped\n", args[0])
 	}
 
 	return nil
